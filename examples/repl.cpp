@@ -51,13 +51,38 @@ int main() {
 
     if(input == "help") { //print help
 
-      std::cout << "This REPL runs with a character represenation" << '\n';
+      std::cout << "This REPL runs with a character representation" << '\n';
       std::cout << "Enter a single character to define it as a symbol." << '\n';
       std::cout << "Enter an expression of the form a->abc.. to add a rule." << '\n';
       std::cout << "Enter an expression of the form (abc..) to set the axiom." << '\n';
       std::cout << "Enter an expression of the form N! to evaluate the system at N generations." << '\n';
+      std::cout << "Enter 'info' to display info about the current system." << '\n';
       std::cout << "Enter 'help' to display this message." << '\n';
       std::cout << "Enter 'exit' to exit the program." << '\n';
+    }
+    else if(input == "info") {
+
+      std::cout << "Current axiom: " << represent(system.axiom()) << '\n';
+      std::cout << "All defined symbols: ";
+
+      for(const auto& pair : symbolTypes) {
+
+        std::cout << pair.first << ' ';
+      }
+
+      std::cout << "\nAll symbols used in system: ";
+
+      for(const auto& symbolType : system.getAllSymbolTypes()) {
+
+        std::cout << symbolType.representation() << ' ';
+      }
+
+      std::cout << "\nRules used in system: ";
+
+      for(const auto& rule : system.rules()) {
+
+        std::cout << rule.first.representation() << arrow << represent(rule.second.result()) << ' ';
+      }
     }
     else if(input.find(arrow) != std::string::npos) { //add rule
 
@@ -141,7 +166,7 @@ int main() {
 
       if(startup) {
 
-        std::cout << "Basic l system REPL\n\n";
+        std::cout << "\nBasic l system REPL\n\n";
         startup = false;
       }
       else {

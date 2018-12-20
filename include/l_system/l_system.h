@@ -5,6 +5,8 @@
 #include <numeric>
 #include <iterator>
 #include <functional>
+#include <vector>
+#include <set>
 #include <sstream>
 
 namespace l_system {
@@ -27,6 +29,11 @@ namespace l_system {
     bool operator==(const LSymbolType &other) const {
 
       return representation() == other.representation();
+    }
+
+    bool operator<(const LSymbolType &other) const {
+
+      return representation() < other.representation();
     }
   };
 
@@ -90,7 +97,12 @@ namespace l_system {
 
     LRule(std::initializer_list<LSymbol<T>> result) : result_(result) {}
 
-     auto operator()([[maybe_unused]] LString<T> before, [[maybe_unused]] LString<T> after) const noexcept -> LString<T> {
+    auto result() const noexcept -> LString<T> {
+
+      return result_;
+    }
+
+    auto operator()([[maybe_unused]] LString<T> before, [[maybe_unused]] LString<T> after) const noexcept -> LString<T> {
 
       return result_;
     }
@@ -100,7 +112,7 @@ namespace l_system {
   class LSystem {
 
     LString<T> axiom_;
-    std::unordered_map<LSymbolType<T>, LRule<T>, LSymbolTypeHash<T, H>> rules;
+    std::unordered_map<LSymbolType<T>, LRule<T>, LSymbolTypeHash<T, H>> rules_;
 
   public:
 
@@ -109,7 +121,7 @@ namespace l_system {
 
     void setRule(LSymbolType<T> type, LRule<T> rule) noexcept {
 
-      rules.insert_or_assign(type, rule);
+      rules_.insert_or_assign(type, rule);
     }
 
     void setAxiom(const LString<T>& axiom) noexcept {
@@ -117,12 +129,17 @@ namespace l_system {
       axiom_ = axiom;
     }
 
-     auto axiom() const noexcept -> LString<T> {
+    auto axiom() const noexcept -> LString<T> {
 
       return axiom_;
     }
 
-     auto generate(int generations) const noexcept -> LString<T> {
+    auto rules() const noexcept -> std::unordered_map<LSymbolType<T>, LRule<T>, LSymbolTypeHash<T, H>> {
+
+      return rules_;
+    }
+
+    auto generate(int generations) const noexcept -> LString<T> {
 
       auto current = axiom_;
 
@@ -133,7 +150,7 @@ namespace l_system {
 
         for(auto symbol = current.begin(); symbol != current.end(); symbol++) {
 
-          bool symbolIsTerminal = rules.count(symbol->type()) == 0;
+          bool symbolIsTerminal = rules_.count(symbol->type()) == 0;
 
           LString<T> symbolReplacement;
 
@@ -145,7 +162,7 @@ namespace l_system {
 
             auto before = (symbol == current.begin()) ? LString<T>() : LString<T>(current.begin(), symbol - 1);
             auto after = (symbol == current.end() - 1) ? LString<T>() : LString<T>(symbol + 1, current.end() - 1);
-            symbolReplacement = rules.at(symbol->type())(before, after);
+            symbolReplacement = rules_.at(symbol->type())(before, after);
           }
 
           result.emplace_back(symbolReplacement);
@@ -160,6 +177,28 @@ namespace l_system {
       }
 
       return current;
+    }
+
+    auto getAllSymbolTypes() const noexcept -> std::set<LSymbolType<T>> {
+
+      std::set<LSymbolType<T>> result;
+
+      for(const auto& symbol : axiom_) {
+
+        result.emplace(symbol.type());
+      }
+
+      for(const auto& [pred, succ] : rules_) {
+
+        result.emplace(pred);
+
+        for(const auto& symbol : succ.result()) {
+
+          result.emplace(symbol.type());
+        }
+      }
+
+      return result;
     }
   };
 }
