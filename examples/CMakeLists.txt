@@ -6,3 +6,5 @@ add_executable(algae algae.cpp)
 add_executable(point point.cpp)
 
 add_executable(repl repl.cpp)
+
+add_executable(param param.cpp)
