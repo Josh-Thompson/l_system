@@ -133,7 +133,7 @@ namespace l_system::param {
 
   auto totalParameterCount(LParameterSet set) noexcept -> LParameterDataSize {
 
-    return parameterCount(set, LCHAR) + parameterCount(set, LINT) + parameterCount(set, LFLOAT) + parameterCount(set, LCUSTOM);
+    return static_cast<LParameterDataSize>(parameterCount(set, LCHAR)) + parameterCount(set, LINT) + parameterCount(set, LFLOAT) + parameterCount(set, LCUSTOM);
   }
 
   auto requiredDataSize(LParameterSet set, LParameterCustomSize customSize) noexcept -> LParameterDataSize {
@@ -170,17 +170,16 @@ namespace l_system::param {
       auto charCount = parameterCount(set_, LCHAR);
       auto intCount = parameterCount(set_, LINT);
       auto floatCount = parameterCount(set_, LFLOAT);
-      auto customCount = parameterCount(set_, LCUSTOM);
 
       if(n < charCount) {
 
         return LCHAR;
       }
-      else if(n < charCount + intCount) {
+      else if(n < static_cast<LParameterDataSize>(charCount) + intCount) {
 
         return LINT;
       }
-      else if(n < charCount + intCount + floatCount) {
+      else if(n < static_cast<LParameterDataSize>(charCount) + intCount + floatCount) {
 
         return LFLOAT;
       }
