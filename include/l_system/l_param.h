@@ -131,6 +131,11 @@ namespace l_system::param {
     return count;
   }
 
+  auto totalParameterCount(LParameterSet set) noexcept -> LParameterDataSize {
+
+    return parameterCount(set, LCHAR) + parameterCount(set, LINT) + parameterCount(set, LFLOAT) + parameterCount(set, LCUSTOM);
+  }
+
   auto requiredDataSize(LParameterSet set, LParameterCustomSize customSize) noexcept -> LParameterDataSize {
 
     return (parameterCount(set, LCHAR) * sizeof(char))
@@ -156,6 +161,33 @@ namespace l_system::param {
     auto customSize() const noexcept -> LParameterCustomSize {
 
       return customSize_;
+    }
+
+    auto getType(LParameterDataSize n) const noexcept -> LParameter {
+
+      assert(n < totalParameterCount(set_) && "out of bounds parameter access.");
+
+      auto charCount = parameterCount(set_, LCHAR);
+      auto intCount = parameterCount(set_, LINT);
+      auto floatCount = parameterCount(set_, LFLOAT);
+      auto customCount = parameterCount(set_, LCUSTOM);
+
+      if(n < charCount) {
+
+        return LCHAR;
+      }
+      else if(n < charCount + intCount) {
+
+        return LINT;
+      }
+      else if(n < charCount + intCount + floatCount) {
+
+        return LFLOAT;
+      }
+      else {
+
+        return LCUSTOM;
+      }
     }
 
     auto getChar(LParameterCount n) const noexcept -> char {
