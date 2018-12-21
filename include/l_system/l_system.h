@@ -97,9 +97,9 @@ namespace l_system {
 
         result.emplace(pred);
 
-        for(const auto& symbol : succ.result()) {
+        for(const auto& symbolType : succ.result()) {
 
-          result.emplace(symbol.type());
+          result.emplace(symbolType);
         }
       }
 

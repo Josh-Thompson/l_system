@@ -20,8 +20,8 @@ int main(int argc, char** argv) {
   LSymbol B_(B);
   B_.setIntParam(50285, 0);
 
-  LRule A_AB(A, {A_, B_}); //define rules
-  LRule B_A(B, {A_});
+  LRule A_AB(A, {A, B}); //define rules
+  LRule B_A(B, {A});
 
   LSystem system({LSymbol(A)}); //define the system using an axiom
 

@@ -106,11 +106,11 @@ int main() {
       else {
 
         LSymbolType<char> predecessor = symbolTypes.at(from[0]);
-        LString<char> successor;
+        LTypeString<char> successor;
 
         for(auto c : to) {
 
-          successor.emplace_back(LSymbol(symbolTypes.at(c)));
+          successor.emplace_back(symbolTypes.at(c));
         }
 
         system.setRule(predecessor, LRule(predecessor, successor));

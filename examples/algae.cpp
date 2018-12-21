@@ -21,8 +21,8 @@ int main(int argc, char const *argv[]) {
   LSymbol A_(A); //define symbols needed for axiom and rules
   LSymbol B_(B);
 
-  LRule A_AB(A, {A_, B_}); //define rules
-  LRule B_A(B, {A_});
+  LRule A_AB(A, {A, B}); //define rules
+  LRule B_A(B, {A});
 
   LSystem algae({LSymbol(A)}); //define the system using an axiom
 
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]) {
 
   LSymbol C_(C); //new symbols as well
 
-  LRule B_CA(B, {C_, A_}); //and new rules
+  LRule B_CA(B, {C, A}); //and new rules
 
   algae.setRule(B, B_CA); //the rules can be changed
 

@@ -57,6 +57,9 @@ namespace l_system::symbol {
   };
 
   template <typename T>
+  using LTypeString = std::vector<LSymbolType<T>>;
+
+  template <typename T>
   class LSymbol {
 
     LSymbolType<T> type_;
@@ -160,6 +163,21 @@ namespace l_system::symbol {
 
     return stream.str();
   }
+
+  template <typename T>
+  auto represent(const LTypeString<T>& ltstring) noexcept -> std::string {
+
+    std::ostringstream stream;
+
+    for(LSymbolType<T> symbolType : ltstring) {
+
+      stream << symbolType.representation();
+    }
+
+    return stream.str();
+  }
+
+
 }
 
 #endif

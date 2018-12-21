@@ -13,23 +13,28 @@ namespace l_system::rule {
   class LRule {
 
     LSymbolType<T> predecessor_;
-    LString<T> result_;
+    LTypeString<T> result_;
 
   public:
 
-    LRule(LSymbolType<T> predecessor, LString<T> result) : predecessor_(predecessor), result_(result) {}
+    LRule(LSymbolType<T> predecessor, LTypeString<T> result) : predecessor_(predecessor), result_(result) {}
 
-    LRule(LSymbolType<T> predecessor, std::initializer_list<LSymbol<T>> result) : predecessor_(predecessor), result_(result) {}
+    LRule(LSymbolType<T> predecessor, std::initializer_list<LSymbolType<T>> result) : predecessor_(predecessor), result_(result) {}
 
-    auto result() const noexcept -> LString<T> {
+    auto result() const noexcept -> LTypeString<T> {
 
       return result_;
     }
 
     auto operator()([[maybe_unused]] LSymbol<T> inputSymbol, [[maybe_unused]] LString<T> before, [[maybe_unused]] LString<T> after) const noexcept -> LString<T> {
 
-      auto result = result_;
+      LString<T> result;
+      result.reserve(result_.size());
 
+      for(auto l : result_) {
+
+        result.emplace_back(LSymbol<T>(l));
+      }
 
       return result;
     }

@@ -55,8 +55,8 @@ int main(int argc, char const *argv[]) {
   LSymbol A_(A); //define symbol instances needed for axiom and rules
   LSymbol B_(B);
 
-  LRule A_AB(A, {A_, B_}); //define rules
-  LRule B_A(B, {A_});
+  LRule A_AB(A, {A, B}); //define rules
+  LRule B_A(B, {A});
 
   LSystem<Point, PointHash> points({LSymbol(A)}); //custom hash types require explicit template declaration for the LSystem type
 
