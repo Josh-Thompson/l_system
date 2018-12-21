@@ -1,13 +1,11 @@
 #ifndef L_SYSTEM_PARAM_H
 #define L_SYSTEM_PARAM_H
 
-#include <vector>
-#include <numeric>
-#include <algorithm>
-#include <iomanip>
-#include <sstream>
 #include <cassert>
-#include <array>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <numeric>
 
 namespace l_system::param {
 
@@ -133,7 +131,7 @@ namespace l_system::param {
     return count;
   }
 
-  auto requiredDataSize(LParameterSet set, LParameterCustomSize customSize = 1) noexcept -> LParameterDataSize {
+  auto requiredDataSize(LParameterSet set, LParameterCustomSize customSize) noexcept -> LParameterDataSize {
 
     return (parameterCount(set, LCHAR) * sizeof(char))
     + (parameterCount(set, LINT) * sizeof(int))
@@ -143,8 +141,8 @@ namespace l_system::param {
 
   class LParameterData {
 
-    const LParameterSet set_; //the information about the set of parameters, 4 bytes
-    const LParameterCustomSize customSize_; //the information about the size of the custom parameter type, 1 byte
+    LParameterSet set_; //the information about the set of parameters, 4 bytes
+    LParameterCustomSize customSize_; //the information about the size of the custom parameter type, 1 byte
     std::vector<unsigned char> bytes_; //the data storage, sizeof(vector) bytes, probably 20 bytes maximum
 
   public:

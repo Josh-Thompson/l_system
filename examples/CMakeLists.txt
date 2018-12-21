@@ -8,3 +8,5 @@ add_executable(point point.cpp)
 add_executable(repl repl.cpp)
 
 add_executable(param param.cpp)
+
+add_executable(param_system param_system.cpp)

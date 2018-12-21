@@ -83,6 +83,8 @@ int main() {
 
         std::cout << rule.first.representation() << arrow << represent(rule.second.result()) << ' ';
       }
+
+      std::cout << '\n';
     }
     else if(input.find(arrow) != std::string::npos) { //add rule
 
@@ -111,7 +113,7 @@ int main() {
           successor.emplace_back(LSymbol(symbolTypes.at(c)));
         }
 
-        system.setRule(predecessor, successor);
+        system.setRule(predecessor, LRule(predecessor, successor));
         std::cout << "Added rule " << input << '\n';
       }
     }
