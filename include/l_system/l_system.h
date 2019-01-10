@@ -13,20 +13,20 @@ namespace l_system {
   using namespace symbol;
   using namespace rule;
 
-  template <typename T, typename H = std::hash<T>>
+  template <typename T>
   class LSystem {
 
     LString<T> axiom_;
-    std::unordered_map<LSymbolType<T>, LRule<T>, LSymbolTypeHash<T, H>> rules_;
+    std::vector<LRule<T>> rules_;
 
   public:
 
     LSystem(LString<T> axiom) : axiom_(axiom) {}
     LSystem(std::initializer_list<LSymbol<T>> axiom) : axiom_(axiom) {}
 
-    void setRule(LSymbolType<T> type, LRule<T> rule) noexcept {
+    void addRule(LRule<T> rule) noexcept {
 
-      rules_.insert_or_assign(type, rule);
+      rules_.emplace_back(rule);
     }
 
     void setAxiom(const LString<T>& axiom) noexcept {
@@ -39,7 +39,7 @@ namespace l_system {
       return axiom_;
     }
 
-    auto rules() const noexcept -> std::unordered_map<LSymbolType<T>, LRule<T>, LSymbolTypeHash<T, H>> {
+    auto rules() const noexcept -> std::vector<LRule<T>> {
 
       return rules_;
     }
@@ -53,21 +53,16 @@ namespace l_system {
         std::vector<LString<T>> result;
         result.reserve(current.size());
 
-        for(auto symbol = current.begin(); symbol != current.end(); symbol++) {
+        for(size_t j = 0; j < current.size(); ++j) {
 
-          bool symbolIsTerminal = rules_.count(symbol->type()) == 0;
+          LString<T> symbolReplacement = {current[j]};
 
-          LString<T> symbolReplacement;
+          for(const auto& rule : rules_) {
 
-          if(symbolIsTerminal) {
+              if(rule.applies(current[j])) {
 
-            symbolReplacement.emplace_back(*symbol);
-          }
-          else {
-
-            auto before = (symbol == current.begin()) ? LString<T>() : LString<T>(current.begin(), symbol - 1);
-            auto after = (symbol == current.end() - 1) ? LString<T>() : LString<T>(symbol + 1, current.end() - 1);
-            symbolReplacement = rules_.at(symbol->type())(*symbol, before, after);
+                symbolReplacement = rule.produce(current[j]);
+              }
           }
 
           result.emplace_back(symbolReplacement);
@@ -93,11 +88,11 @@ namespace l_system {
         result.emplace(symbol.type());
       }
 
-      for(const auto& [pred, succ] : rules_) {
+      for(const auto& rule : rules_) {
 
-        result.emplace(pred);
+        result.emplace(rule.predecessor());
 
-        for(const auto& symbolType : succ.result()) {
+        for(const auto& symbolType : rule.result()) {
 
           result.emplace(symbolType);
         }

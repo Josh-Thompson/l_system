@@ -32,16 +32,6 @@ public:
   }
 };
 
-//Custom hash struct, Point must be hashable
-struct PointHash {
-    std::size_t operator()(Point const& point) const noexcept {
-
-        size_t h1 = std::hash<int>()(point.x());
-        size_t h2 = std::hash<int>()(point.y());
-        return h1 ^ (h2 << 1); //basic hashing of coordinates
-    }
-};
-
 int main(int argc, char const *argv[]) {
 
   using namespace l_system;
@@ -58,10 +48,10 @@ int main(int argc, char const *argv[]) {
   LRule A_AB(A, {A, B}); //define rules
   LRule B_A(B, {A});
 
-  LSystem<Point, PointHash> points({LSymbol(A)}); //custom hash types require explicit template declaration for the LSystem type
+  LSystem<Point> points({LSymbol(A)}); //custom hash types require explicit template declaration for the LSystem type
 
-  points.setRule(A, A_AB); //add the rules to the system
-  points.setRule(B, B_A);
+  points.addRule(A_AB); //add the rules to the system
+  points.addRule(B_A);
 
   std::cout << "Points generation " << generation << ": " << represent(points.generate(generation)) << '\n';
 

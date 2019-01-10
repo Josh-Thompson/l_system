@@ -47,15 +47,6 @@ namespace l_system::symbol {
     }
   };
 
-  template <typename T, typename H>
-  struct LSymbolTypeHash {
-
-    size_t operator()(const LSymbolType<T>& k) const {
-
-      return H()(k.representation());
-    }
-  };
-
   template <typename T>
   using LTypeString = std::vector<LSymbolType<T>>;
 

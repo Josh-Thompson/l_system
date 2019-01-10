@@ -81,7 +81,7 @@ int main() {
 
       for(const auto& rule : system.rules()) {
 
-        std::cout << rule.first.representation() << arrow << represent(rule.second.result()) << ' ';
+        std::cout << rule.representation() << ' ';
       }
 
       std::cout << '\n';
@@ -113,7 +113,7 @@ int main() {
           successor.emplace_back(symbolTypes.at(c));
         }
 
-        system.setRule(predecessor, LRule(predecessor, successor));
+        system.addRule(LRule(predecessor, successor));
         std::cout << "Added rule " << input << '\n';
       }
     }
