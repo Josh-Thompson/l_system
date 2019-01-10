@@ -9,10 +9,6 @@
 
 namespace l_system {
 
-  using namespace param;
-  using namespace symbol;
-  using namespace rule;
-
   template <typename T>
   class LSystem {
 

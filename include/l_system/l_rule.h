@@ -4,9 +4,7 @@
 #include "l_system/l_symbol.h"
 #include "l_system/l_param.h"
 
-namespace l_system::rule {
-
-  using namespace symbol;
+namespace l_system {
 
   template <typename T>
   class LRule {

@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <numeric>
 
-namespace l_system::param {
+namespace l_system {
 
   namespace {
 

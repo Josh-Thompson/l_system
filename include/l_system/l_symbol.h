@@ -3,9 +3,7 @@
 
 #include "l_system/l_param.h"
 
-namespace l_system::symbol {
-
-  using namespace param;
+namespace l_system {
 
   template <typename T>
   class LSymbolType {
@@ -145,7 +143,7 @@ namespace l_system::symbol {
         }
         for(LParameterCount i = 0; i < parameterCount(symbol.paramSet(), LCUSTOM); ++i) {
 
-          stream << param::represent(symbol.getCustomParam(i), false) << ' ';
+          stream << represent(symbol.getCustomParam(i), false) << ' ';
         }
 
         stream << ')';
@@ -167,8 +165,6 @@ namespace l_system::symbol {
 
     return stream.str();
   }
-
-
 }
 
 #endif

@@ -7,7 +7,7 @@
 
 int main() {
 
-  using namespace l_system::param; //parameters are decoupled from the central system, they can be worked with outside of any l system context
+  using namespace l_system; //parameters are decoupled from the central system, they can be worked with outside of any l system context
 
   LParameterSet emptySet = parameterSet(); //creates an empty parameter set
   LParameterSet oneOfEach = parameterSet({LCHAR, LINT, LFLOAT, LCUSTOM}); //insert each type the number of times you want to include it
