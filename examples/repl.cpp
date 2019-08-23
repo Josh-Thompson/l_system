@@ -101,7 +101,7 @@ int main() {
       }
       else if(!doesAllSymbolSExist(symbolTypes, to)) {
 
-        std::cout << "Invalid successor" << to << "in rule. Successor contains nonexistant symbols." << '\n';
+        std::cout << "Invalid successor " << to << " in rule. Successor contains nonexistent symbols." << '\n';
       }
       else {
 
@@ -125,7 +125,7 @@ int main() {
       }
       else if(doesSymbolExist(symbolTypes, c)) {
 
-        std::cout << "Symbol " << c << "already exists." << '\n';
+        std::cout << "Symbol " << c << " already exists." << '\n';
       }
       else {
         symbolTypes.insert_or_assign(c, LSymbolType(c));
@@ -138,7 +138,7 @@ int main() {
 
       if(!doesAllSymbolSExist(symbolTypes, axiomString)) {
 
-        std::cout << "Invalid axiom" << axiomString << "contains undefined symbols." << '\n';
+        std::cout << "Invalid axiom (" << axiomString << "); contains undefined symbols." << '\n';
       }
       else {
 
